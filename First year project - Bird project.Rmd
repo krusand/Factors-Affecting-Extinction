@@ -15,5 +15,3 @@ data <- read.csv('Factors Affecting Extinction.csv')
 data
 ```
 
-
-
