@@ -36,11 +36,6 @@ p4 <- ggplot(SR,aes(Pairs, Time)) + geom_point() + ggtitle("Small Resident") + y
 p1 + p2 + p3 + p4
 
 
-lm_LM <- lm(formula = Time ~ Pairs, data = LM)
-lm_LR <- lm(formula = Time ~ Pairs, data = LR)
-lm_SM <- lm(formula = Time ~ Pairs, data = SM)
-lm_SR <- lm(formula = Time ~ Pairs, data = SR)
-
 
 
 lm_data <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
