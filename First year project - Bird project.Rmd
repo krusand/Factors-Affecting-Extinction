@@ -15,3 +15,21 @@ data <- read.csv('Factors Affecting Extinction.csv')
 data
 ```
 
+
+# 1 
+Plot 4 graphs with LM, LR, SM, SR with slopes and geom_point()
+
+# 2
+Residual plot + plots of possible transformations
+
+# 3
+Try log(t), sqrt(t), 1/t
+Which fits best?
+
+# 4
+Explain Outliers and argue why they should be in dataset
+
+# 5 
+
+
+
