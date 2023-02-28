@@ -40,10 +40,11 @@ lm_LM <- lm(formula = Time ~ Pairs, data = LM)
 lm_LR <- lm(formula = Time ~ Pairs, data = LR)
 lm_SM <- lm(formula = Time ~ Pairs, data = SM)
 lm_SR <- lm(formula = Time ~ Pairs, data = SR)
-summary(lm_LM)
-summary(lm_LR)
-summary(lm_SM)
-summary(lm_SR)
+
+
+
+lm_data <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+summary(lm_data)
 
 ```
 
