@@ -7,6 +7,8 @@ date: "`r Sys.Date()`"
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
-
-
+```{r}
+data <- read.csv('Factors Affecting Extinction.csv')
+data
+```
 
