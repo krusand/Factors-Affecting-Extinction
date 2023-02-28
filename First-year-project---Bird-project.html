@@ -443,78 +443,34 @@ p1 + p2 + p3 + p4</code></pre>
 lm_LR &lt;- lm(formula = Time ~ Pairs, data = LR)
 lm_SM &lt;- lm(formula = Time ~ Pairs, data = SM)
 lm_SR &lt;- lm(formula = Time ~ Pairs, data = SR)
-summary(lm_LM)</code></pre>
+
+
+
+lm_data &lt;- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+summary(lm_data)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Time ~ Pairs, data = LM)
+## lm(formula = Time ~ Pairs + Size + Status + Pairs * Size + Pairs * 
+##     Status + Size * Status + Pairs * Size * Status, data = data)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -2.3471 -2.1315 -1.5119 -0.4005 10.2323 
+## -14.769  -3.644  -0.652   1.128  49.831 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   0.7775     3.2969   0.236    0.821
-## Pairs         1.2397     0.8501   1.458    0.195
+##                     Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)           0.7775     6.6831   0.116    0.908
+## Pairs                 1.2397     1.7232   0.719    0.475
+## SizeS                 0.1759     8.3168   0.021    0.983
+## StatusR               4.0489     7.8704   0.514    0.609
+## Pairs:SizeS          -0.9058     2.4206  -0.374    0.710
+## Pairs:StatusR         0.5317     2.0037   0.265    0.792
+## SizeS:StatusR        -9.4013     9.8736  -0.952    0.345
+## Pairs:SizeS:StatusR   2.0047     2.7218   0.737    0.465
 ## 
-## Residual standard error: 4.557 on 6 degrees of freedom
-## Multiple R-squared:  0.2617, Adjusted R-squared:  0.1387 
-## F-statistic: 2.127 on 1 and 6 DF,  p-value: 0.195</code></pre>
-<pre class="r"><code>summary(lm_LR)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Time ~ Pairs, data = LR)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -14.769  -5.786  -3.239  -1.905  49.831 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)    4.826      6.406   0.753    0.461
-## Pairs          1.771      1.576   1.124    0.276
-## 
-## Residual standard error: 14.23 on 18 degrees of freedom
-## Multiple R-squared:  0.06561,    Adjusted R-squared:  0.0137 
-## F-statistic: 1.264 on 1 and 18 DF,  p-value: 0.2757</code></pre>
-<pre class="r"><code>summary(lm_SM)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Time ~ Pairs, data = SM)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.46311 -0.28732 -0.15942 -0.00683  1.59213 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)   0.9534     0.3231   2.950   0.0162 *
-## Pairs         0.3339     0.1110   3.009   0.0147 *
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.603 on 9 degrees of freedom
-## Multiple R-squared:  0.5016, Adjusted R-squared:  0.4462 
-## F-statistic: 9.056 on 1 and 9 DF,  p-value: 0.01473</code></pre>
-<pre class="r"><code>summary(lm_SR)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Time ~ Pairs, data = SR)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -9.4625 -4.5930  0.0705  2.5288 16.9401 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -4.3990     2.2649  -1.942   0.0656 .  
-## Pairs         2.8703     0.4837   5.934 6.87e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 6.297 on 21 degrees of freedom
-## Multiple R-squared:  0.6264, Adjusted R-squared:  0.6086 
-## F-statistic: 35.21 on 1 and 21 DF,  p-value: 6.868e-06</code></pre>
+## Residual standard error: 9.237 on 54 degrees of freedom
+## Multiple R-squared:  0.3398, Adjusted R-squared:  0.2542 
+## F-statistic:  3.97 on 7 and 54 DF,  p-value: 0.001446</code></pre>
 </div>
 <div id="section-1" class="section level1">
 <h1>2</h1>
