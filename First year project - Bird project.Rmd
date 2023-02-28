@@ -19,6 +19,26 @@ data
 # 1 
 Plot 4 graphs with LM, LR, SM, SR with slopes and geom_point()
 
+```{r}
+library(patchwork)
+L_data <- subset(data, Size == "L")
+S_data <- subset(data, Size == "S")
+LM <- subset(L_data, Status == "M")
+LR <- subset(L_data, Status == "R")
+SM <- subset(S_data, Status == "M")
+SR <- subset(S_data, Status == "R")
+
+p1 <- ggplot(LM) + geom_point(aes(Time, Pairs)) + ggtitle("LM") + xlab("Time in thousands [Y]") + ylab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5))
+p2 <- ggplot(LR) + geom_point(aes(Time, Pairs)) + ggtitle("LR") + xlab("Time in thousands [Y]") + ylab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5))
+p3 <- ggplot(SM) + geom_point(aes(Time, Pairs)) + ggtitle("SM") + xlab("Time in thousands [Y]") + ylab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5))
+p4 <- ggplot(SR) + geom_point(aes(Time, Pairs)) + ggtitle("SR") + xlab("Time in thousands [Y]") + ylab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5))
+
+p1 + p2 + p3 + p4
+
+```
+
+
+
 # 2
 Residual plot + plots of possible transformations
 
