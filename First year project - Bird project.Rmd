@@ -20,6 +20,22 @@ data
 Plot 4 graphs with LM, LR, SM, SR with slopes and geom_point()
 
 ```{r}
+
+
+
+lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full.log <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full.sqrt <- lm(formula = sqrt(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full.inverse <- lm(formula = 1/Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+
+summary(lm_full)$r.squared
+summary(lm_full.log)$r.squared
+summary(lm_full.sqrt)$r.squared
+summary(lm_full.inverse)$r.squared
+
+```
+
+```{r}
 library(patchwork)
 L_data <- subset(data, Size == "L")
 S_data <- subset(data, Size == "S")
@@ -27,33 +43,44 @@ LM <- subset(L_data, Status == "M")
 LR <- subset(L_data, Status == "R")
 SM <- subset(S_data, Status == "M")
 SR <- subset(S_data, Status == "R")
-
 p1 <- ggplot(LM,aes(Pairs, Time)) + geom_point() + ggtitle("Large Migrant") + ylab("Time in thousands [Y]") + xlab("") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm", level = 0)
 p2 <- ggplot(LR,aes(Pairs, Time)) + geom_point() + ggtitle("Large Resident")+ ylab("")  + xlab("") + theme(plot.title = element_text(hjust = 0.5))+ stat_smooth(method = "lm",level = 0)
 p3 <- ggplot(SM,aes(Pairs, Time)) + geom_point() + ggtitle("Small Migrant") + ylab("Time in thousands [Y]") + xlab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm",level = 0)
 p4 <- ggplot(SR,aes(Pairs, Time)) + geom_point() + ggtitle("Small Resident") + ylab("") + xlab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm",level = 0)
 
-p1 + p2 + p3 + p4
-
-
-
-
-lm_data <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
-summary(lm_data)
+ggplot(data, aes(Pairs, (Time))) + geom_point()
 
 ```
-
-
 
 # 2
 Residual plot + plots of possible transformations
 
 ```{r}
 
-standard_res <- rstandard(lm_data)
+standard_res <- rstandard(lm_full)
 final_data <- cbind(data, standard_res)
-plot(final_data$Pairs, standard_res, ylab='Standardized Residuals', xlab='Predicted values') 
+plot((final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Standard") 
 abline(0, 0)
+plot(log(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Log(t)") 
+abline(0, 0)
+plot(sqrt(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main = "sqrt(t)") 
+abline(0, 0)
+plot(1/(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="1/time") 
+abline(0, 0)
+
+
+```
+
+```{r}
+qqnorm(data$Time, main="Q-Q plot for time")
+qqline(data$Time)
+qqnorm(log(data$Time),main="Q-Q plot for log(time)")
+qqline(log(data$Time))
+qqnorm(sqrt(data$Time),main="Q-Q plot for sqrt(time)")
+qqline(sqrt(data$Time))
+qqnorm(1/(data$Time),main="Q-Q plot for 1/time")
+qqline(1/(data$Time))
+
 
 
 ```
@@ -65,6 +92,40 @@ Which fits best?
 
 # 4
 Explain Outliers and argue why they should be in dataset
+```{r}
+data.out <- subset(data, Time < 50)
+lm_full.out <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data.out)
+lm_full.log.out <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data.out)
+lm_full.sqrt.out <- lm(formula = sqrt(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data.out)
+lm_full.inverse.out <- lm(formula = 1/Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data.out)
+
+summary(lm_full.out)$r.squared
+summary(lm_full.log.out)$r.squared
+summary(lm_full.sqrt.out)$r.squared
+summary(lm_full.inverse.out)$r.squared
+
+
+```
+
+
+```{r}
+ggplot(data.out, aes(Pairs, (Time))) + geom_point()
+```
+
+```{r}
+qqnorm(data.out$Time, main="Q-Q plot for time")
+qqline(data.out$Time)
+qqnorm(log(data.out$Time),main="Q-Q plot for log(time)")
+qqline(log(data.out$Time))
+qqnorm(sqrt(data.out$Time),main="Q-Q plot for sqrt(time)")
+qqline(sqrt(data.out$Time))
+qqnorm(1/(data.out$Time),main="Q-Q plot for 1/time")
+qqline(1/(data.out$Time))
+
+```
+
+
+
 
 # 5 
 
