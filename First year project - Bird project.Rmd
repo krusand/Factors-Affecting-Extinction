@@ -124,7 +124,33 @@ qqline(1/(data.out$Time))
 
 ```
 
+```{r}
+lm_full.out.reduced <- lm(formula = Time ~ Pairs + Size + Pairs*Size, data.out)
+lm_full.log.out.reduced <- lm(formula = log(Time) ~ Pairs + Size + Pairs*Size, data.out)
+lm_full.sqrt.out.reduced <- lm(formula = sqrt(Time) ~ Pairs + Size + Pairs*Size, data.out)
+lm_full.inverse.out.reduced <- lm(formula = 1/Time ~ Pairs + Size + Pairs*Size, data.out)
 
+summary(lm_full.out.reduced)$r.squared
+summary(lm_full.log.out.reduced)$r.squared
+summary(lm_full.sqrt.out.reduced)$r.squared
+summary(lm_full.inverse.out.reduced)$r.squared
+
+
+```
+
+```{r}
+standard_res <- rstandard(lm_full.out.reduced)
+final_data <- cbind(data.out, standard_res)
+plot((final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Standard") 
+abline(0, 0)
+plot(log(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Log(t)") 
+abline(0, 0)
+plot(sqrt(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main = "sqrt(t)") 
+abline(0, 0)
+plot(1/(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="1/time") 
+abline(0, 0)
+
+```
 
 
 # 5 
