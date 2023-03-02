@@ -50,12 +50,9 @@ Residual plot + plots of possible transformations
 
 ```{r}
 
-
 standard_res <- rstandard(lm_data)
 final_data <- cbind(data, standard_res)
-
-final_data[order(-standard_res),]
-plot(final_data$Pairs, standard_res, ylab='Standardized Residuals', xlab='x') 
+plot(final_data$Pairs, standard_res, ylab='Standardized Residuals', xlab='Predicted values') 
 abline(0, 0)
 
 
