@@ -28,7 +28,7 @@ lm_full.log <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pai
 lm_full.sqrt <- lm(formula = sqrt(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
 lm_full.inverse <- lm(formula = 1/Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
 
-summary(lm_full)
+summary(lm_full)$r.squared
 summary(lm_full.log)$r.squared
 summary(lm_full.sqrt)$r.squared
 summary(lm_full.inverse)$r.squared
