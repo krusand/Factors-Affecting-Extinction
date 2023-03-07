@@ -1,0 +1,28 @@
+1: 
+Show model in R with summary + model betas and parameters
+Explain R^2 and P-values. 
+
+2:
+Residual plots + QQ-plot
+Theoretical explanation about Transformations + Outliers
+
+3:
+Transformation of models. Check log(t), sqrt(t), 1/t
+Residual plots + QQ-plot for transformations
+
+4:
+Remove outliers depending on cooks distance
+Plot rsquared value as a function of outliers removed. 
+
+5: 
+Make lm where time is estimated log(pair), sqrt(pair), 1/pair
+
+6.1:
+There is a steeper slope for the size differences compared to status difference leading to a conclusion that size matters more.
+
+
+
+
+
+
+
