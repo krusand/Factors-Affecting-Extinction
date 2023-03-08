@@ -68,6 +68,10 @@ Residual plot + plots of possible transformations
 
 standard_res <- rstandard(lm_full)
 final_data <- cbind(data, standard_res)
+
+ggplot(final_data) + geom_point(aes(Time, standard_res)) + geom_abline(slope = 0)
+
+
 plot((final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Standard") 
 abline(0, 0)
 plot(log(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Log(t)") 
@@ -176,4 +180,14 @@ summary(lm_full.sqrtpair)$r.squared
 summary(lm_full.inversepair)$r.squared
 ```
 
+```{r}
+ckd <- cooks.distance(lm_full)
+sub_ckd <- subset(ckd, ckd < 0.2)
+which(ckd > 0.2)
+
+plot(sub_ckd, ylim = c(0,0.4))
+plot(ckd, ylim = c(0,0.4))
+
+
+```
 
