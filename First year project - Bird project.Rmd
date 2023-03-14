@@ -220,11 +220,14 @@ plot(ckd, ylim = c(0,0.4))
 ```{r}
 data_ckd <- data[-c(20,28,60),]
 
-#lm_full_ckd <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data_ckd)
+lm_full_ckd <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data_ckd)
 lm_full.log_ckd <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data_ckd)
 
 summary(lm_full.log)$r.squared
+summary(lm_full.log)$r.squared
 summary(lm_full.log_ckd)$r.squared
+
+sumary(lm_full.log_ckd)
 
 ```
 
