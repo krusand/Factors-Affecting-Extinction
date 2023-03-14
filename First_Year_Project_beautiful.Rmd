@@ -73,6 +73,17 @@ $$
 \hat{\beta_4} \times \text{Pairs} \times \text{Size}
 $$
 
+For the next step in the analysis of the dataset, we look at outliers and residuals
+
+# Residual plot of the full model fit
+
+
+
+```{r}
+
+
+```
+
 
 
 
