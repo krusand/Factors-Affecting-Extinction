@@ -21,6 +21,75 @@ head(data)
 ```
 We have the species, which is our identifier of each bird. Time (extinction time) is a numerical value, as is Paris (nesting pairs). Both size and status are categorical variables with either [L (Large),S (Small)] or [R (Resident),M (Migrant)]
 
+# Making a full model
+We make a full model describing extinction time (outcome variable) as a combination of pairs, size and status (predictor variables)
+The model will look like this:
+$$
+\hat{Y} = \hat{\beta_0} + \hat{\beta_1} \times \text{Pairs} + \hat{\beta_2}  \times \text{Size} + \hat{\beta_3} \times \text{Status} + \hat{\beta_4} \times \text{Pairs} \times \text{Size} + \hat{\beta_5} \times \text{Pairs} \times \text{Status} + \hat{\beta_6} \times \text{Status} \times \text{Size} + \hat{\beta_7} \times \text{Pairs} \times \text{Size} \times \text{Status}
+$$
+
+```{r}
+lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+summary(lm_full)
+
+```
+Calling the summary on the Multiple linear model we just created, we get different measurements. 
+Looking at the R-squared, we got a R-Squared value of 0.3398. We also get an adjusted R-squared with a value of 0.2542. 
+Both show a weak correlation of predictor variables and outcome variables. 
+The p-value is 0.0014 which means this data would occur randomly, approximately 1.4% of the time.
+Looking at the summary we see that R has encoded the Size value "Small" as 1, and Status value "Resident" as one. The opposite values are encoded to 0. 
+This gives us four different possible model looks:
+
+The first model is where Size = Small and Status = Resident. This model is the same as proposed earlier.
+$$
+\hat{Y} = \hat{\beta_0} + 
+\hat{\beta_1} \times \text{Pairs} + 
+\hat{\beta_2} \times \text{Size} + 
+\hat{\beta_3} \times \text{Status} + 
+\hat{\beta_4} \times \text{Pairs} \times \text{Size} + 
+\hat{\beta_5} \times \text{Pairs} \times \text{Status} + 
+\hat{\beta_6} \times \text{Status} \times \text{Size} + 
+\hat{\beta_7} \times \text{Pairs} \times \text{Size} \times \text{Status}
+$$
+The second model is the model where Size = Large and Status = Resident. In this model, all Size variabels are encoded to 0, meaning terms including Size are eliminated.
+
+$$
+\hat{Y} = \hat{\beta_0} + 
+\hat{\beta_1} \times \text{Pairs} + 
+\hat{\beta_3} \times \text{Status} + 
+\hat{\beta_5} \times \text{Pairs} \times \text{Status}
+$$
+The third model is where Size = Large and Status = Migrant. Both Status and Size are 0. 
+
+$$
+\hat{Y} = \hat{\beta_0} + 
+\hat{\beta_1} \times \text{Pairs}
+$$
+The fourth model is where Size = Small and Status = Migrant. Migrant is eliminated from terms including it. 
+$$
+\hat{Y} = \hat{\beta_0} + 
+\hat{\beta_1} \times \text{Pairs} + 
+\hat{\beta_2} \times \text{Size} + 
+\hat{\beta_4} \times \text{Pairs} \times \text{Size}
+$$
+
+For the next step in the analysis of the dataset, we look at outliers and residuals
+
+# Residual plot of the full model fit
+
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
 
 
 

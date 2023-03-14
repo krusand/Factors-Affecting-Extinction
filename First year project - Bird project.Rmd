@@ -217,6 +217,7 @@ plot(sub_ckd, ylim = c(0,0.4))
 plot(ckd, ylim = c(0,0.4))
 
 ```
+<<<<<<< HEAD
 
 
 ```{r}
@@ -227,5 +228,30 @@ final_data.ckd <- cbind(data_ckd, standard_res.ckd)
 
 plot(log(final_data.ckd$Time), standard_res.ckd, ylab='Standardized Residuals', xlab='Predicted values', main="Log(t)") 
 abline(0, 0)
+=======
+```{r}
+data_ckd <- data[-c(20,28,60),]
+
+lm_full_ckd <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data_ckd)
+lm_full.log_ckd <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data_ckd)
+
+summary(lm_full.log)$r.squared
+summary(lm_full.log)$r.squared
+summary(lm_full.log_ckd)$r.squared
+
+sumary(lm_full.log_ckd)
+
+```
+
+```{r}
+
+ggplot(data.out, aes(Pairs, log(Time))) + geom_point()
+ggplot(data_ckd, aes(Pairs, log(Time))) + geom_point()
+```
+
+```{r}
+
+
+>>>>>>> 0195ec12ed2e8daab910a072703a468d61ce05c7
 ```
 
