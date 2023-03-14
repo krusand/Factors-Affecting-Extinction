@@ -160,7 +160,7 @@ plot(log(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Pr
 abline(0, 0)
 plot(sqrt(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main = "sqrt(t)") 
 abline(0, 0)
-plot(1/(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="1/time") 
+plot(1/(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="1/time")
 abline(0, 0)
 
 ```
@@ -216,6 +216,16 @@ which(ckd > 0.2)
 plot(sub_ckd, ylim = c(0,0.4))
 plot(ckd, ylim = c(0,0.4))
 
+```
 
+
+```{r}
+data_ckd <- data[-c(20,28,60),]
+lm_full.reduced.ckd <- lm(formula = Time ~ Pairs + Size + Pairs*Size, data_ckd)
+standard_res.ckd <- rstandard(lm_full.reduced.ckd)
+final_data.ckd <- cbind(data_ckd, standard_res.ckd)
+
+plot(log(final_data.ckd$Time), standard_res.ckd, ylab='Standardized Residuals', xlab='Predicted values', main="Log(t)") 
+abline(0, 0)
 ```
 
