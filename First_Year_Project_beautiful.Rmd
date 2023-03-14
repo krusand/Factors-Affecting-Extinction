@@ -1,0 +1,27 @@
+---
+title: "First Year Project Beautiful"
+output: html_document
+date: "14-03-2023"
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+# Packages
+```{r}
+library(tidyverse)
+```
+
+# Reading Data
+
+```{r}
+data <- read.csv("Factors Affecting Extinction.csv")
+head(data)
+```
+We have the species, which is our identifier of each bird. Time (extinction time) is a numerical value, as is Paris (nesting pairs). Both size and status are categorical variables with either [L (Large),S (Small)] or [R (Resident),M (Migrant)]
+
+
+
+
+
