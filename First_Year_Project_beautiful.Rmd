@@ -75,22 +75,100 @@ $$
 
 For the next step in the analysis of the dataset, we look at outliers and residuals
 
-# Residual plot of the full model fit
+
+
+
+
+
+
+
 
 
 
 ```{r}
+ggplot(data, aes(Pairs, Time)) + geom_point()
+
+qqnorm(data$Time, main="Normal Q-Q plot for standarized residuals")
+qqline(data$Time)
+
+standard_res <- rstandard(lm_full)
+final_data <- cbind(data, standard_res)
+ggplot(final_data) + geom_point(aes(Time, standard_res)) + geom_abline(slope = 0)
+plot((final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Spread-level plot of standardised residuals") 
+abline(0, 0)
 
 
 ```
 
+Analyzing assumptions of linear regression
+
+1) Normality. Q-Q plot shows big deviations on each side. Pag 60
+
+2) Homoscedasticity and linearity. Spread-level plot.
+    Shows a clear non-linear pattern.
+
+
+# Transformations of variables 
+
+R2, q-q plot and spead-level plot for each transformation of the outcome 'Time'
+
+```{r}
+lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data)
+lm_full.log <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full.sqrt <- lm(formula = sqrt(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full.inverse <- lm(formula = 1/Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+
+summary(lm_full)$adj.r.squared
+summary(lm_full.log)$adj.r.squared
+summary(lm_full.sqrt)$adj.r.squared
+summary(lm_full.inverse)$adj.r.squared
+
+
+qqnorm(log(data$Time),main="Q-Q plot for log(time)")
+qqline(log(data$Time))
+qqnorm(sqrt(data$Time),main="Q-Q plot for sqrt(time)")
+qqline(sqrt(data$Time))
+qqnorm(1/(data$Time),main="Q-Q plot for 1/time")
+qqline(1/(data$Time))
+
+plot(log(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="Log(t)") 
+abline(0, 0)
+plot(sqrt(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main = "sqrt(t)") 
+abline(0, 0)
+plot(1/(final_data$Time), standard_res, ylab='Standardized Residuals', xlab='Predicted values', main="1/time")
+abline(0, 0)
+```
+
+We decided to keep working with the transformed variable log(Time). New model:
+
+```{r}
+lm_full_logtime <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+summary(lm_full_logtime)$adj.r.squared
+```
 
 
 
+#Outliers
 
+```{r}
+ckd <- cooks.distance(lm_full_logtime)
+sub_ckd <- subset(ckd, ckd < 0.1)
+index <- which(ckd > 0.1)
 
+index
+plot(ckd, ylim = c(0,0.25))
+plot(sub_ckd, ylim = c(0,0.1))
+```
 
+????? non of them is significantly bigger than the others 
 
+```{r}
+data_ckd <- data[-c(index),]
+
+lm_full_logtime_ckd <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd)
+summary(lm_full_logtime_ckd)$adj.r.squared
+
+```
 
 
 

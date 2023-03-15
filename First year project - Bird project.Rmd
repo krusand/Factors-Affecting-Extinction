@@ -23,15 +23,18 @@ Plot 4 graphs with LM, LR, SM, SR with slopes and geom_point()
 
 
 
-lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data)
 lm_full.log <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
 lm_full.sqrt <- lm(formula = sqrt(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
 lm_full.inverse <- lm(formula = 1/Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
 
-summary(lm_full)$r.squared
-summary(lm_full.log)$r.squared
-summary(lm_full.sqrt)$r.squared
-summary(lm_full.inverse)$r.squared
+summary(lm_full)$adj.r.squared
+summary(lm_full.log)$adj.r.squared
+summary(lm_full.sqrt)$adj.r.squared
+summary(lm_full.inverse)$adj.r.squared
+
+summary(lm_full)
+
 
 ```
 
@@ -187,15 +190,18 @@ summary(lm_full.inversepair)$r.squared
 
 ```{r}
 
-m1 <- lm(formula = log(Time) ~ Pairs, data.out)
-m2 <- lm(formula = log(Time) ~ Pairs + Size, data.out)
-m3 <- lm(formula = log(Time) ~ Pairs + Size + Pairs*Size, data.out)
-m4 <- lm(formula = log(Time) ~ Pairs + Size + Status, data.out)
-m5 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status, data.out)
-m6 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs *Size*Status, data.out)
+m1 <- lm(formula = log(Time) ~ Pairs, data)
+m2 <- lm(formula = log(Time) ~ Pairs + Size, data)
+m3 <- lm(formula = log(Time) ~ Pairs + Size + Pairs*Size, data)
+m4 <- lm(formula = log(Time) ~ Pairs + Status, data)
+m5 <- lm(formula = log(Time) ~ Pairs + Status + Pairs * Status, data)
+m6 <- lm(formula = log(Time) ~ Pairs + Size + Status, data)
+m7 <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
+m8 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
+m9 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status, data)
 
 
-anova(m1, m2, m3, m4, m5, m6)
+anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
 
 summary(m1)$adj.r.squared
 summary(m2)$adj.r.squared
@@ -203,10 +209,23 @@ summary(m3)$adj.r.squared
 summary(m4)$adj.r.squared
 summary(m5)$adj.r.squared
 summary(m6)$adj.r.squared
+summary(m7)$adj.r.squared
+summary(m8)$adj.r.squared
+summary(m9)$adj.r.squared
 
-summary(m6)
+summary(m7)
 
 ```
+
+
+
+###########
+
+Analyzing only the R-squared the best model seems to be number 7, which does not consider the interaction between size and status together
+
+
+
+
 
 ```{r}
 ckd <- cooks.distance(lm_full)
