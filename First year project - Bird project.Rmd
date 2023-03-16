@@ -42,23 +42,32 @@ summary(lm_full)
 library(patchwork)
 L_data <- subset(data, Size == "L")
 S_data <- subset(data, Size == "S")
+M_data <- subset(data, Status == "M")
+R_data <- subset(data, Status == "R")
+
 LM <- subset(L_data, Status == "M")
 LR <- subset(L_data, Status == "R")
 SM <- subset(S_data, Status == "M")
 SR <- subset(S_data, Status == "R")
-p1 <- ggplot(LM,aes(Pairs, Time)) + geom_point() + ggtitle("Large Migrant") + ylab("Time in thousands [Y]") + xlab("") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm", level = 0)
-p2 <- ggplot(LR,aes(Pairs, Time)) + geom_point() + ggtitle("Large Resident")+ ylab("")  + xlab("") + theme(plot.title = element_text(hjust = 0.5))+ stat_smooth(method = "lm",level = 0)
-p3 <- ggplot(SM,aes(Pairs, Time)) + geom_point() + ggtitle("Small Migrant") + ylab("Time in thousands [Y]") + xlab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm",level = 0)
-p4 <- ggplot(SR,aes(Pairs, Time)) + geom_point() + ggtitle("Small Resident") + ylab("") + xlab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm",level = 0)
+p1 <- ggplot(LM,aes(Pairs, Time)) + geom_point() + ggtitle("Large Migrant") + ylab("Time in thousands [Y]") + xlab("") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm", level = 0) + xlim(c(0,12)) + ylim(c(0,20))
+p2 <- ggplot(LR,aes(Pairs, Time)) + geom_point() + ggtitle("Large Resident")+ ylab("")  + xlab("") + theme(plot.title = element_text(hjust = 0.5))+ stat_smooth(method = "lm",level = 0)+ xlim(c(0,12)) + ylim(c(0,60))
+p3 <- ggplot(SM,aes(Pairs, Time)) + geom_point() + ggtitle("Small Migrant") + ylab("Time in thousands [Y]") + xlab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm",level = 0)+ xlim(c(0,12)) + ylim(c(0,20))
+p4 <- ggplot(SR,aes(Pairs, Time)) + geom_point() + ggtitle("Small Resident") + ylab("") + xlab("Nr. of Pairs") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm",level = 0)+ xlim(c(0,12)) + ylim(c(0,60))
 
-p5 <- ggplot(L_data,aes(Pairs, log(Time))) + geom_point() + ggtitle("Large Migrant") + ylab("Time in thousands [Y]") + xlab("") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm", level = 0)
-p6 <- ggplot(S_data,aes(Pairs, log(Time))) + geom_point() + ggtitle("Large Resident")+ ylab("")  + xlab("") + theme(plot.title = element_text(hjust = 0.5))+ stat_smooth(method = "lm",level = 0)
+p5 <- ggplot(L_data,aes(Pairs, Time)) + geom_point() + ggtitle("Large") + ylab("Time in thousands [Y]") + xlab("") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm", level = 0)+ xlim(c(0,12)) + ylim(c(0,60))
+p6 <- ggplot(S_data,aes(Pairs, Time)) + geom_point() + ggtitle("Small")+ ylab("")  + xlab("") + theme(plot.title = element_text(hjust = 0.5))+ stat_smooth(method = "lm",level = 0)+ xlim(c(0,12)) + ylim(c(0,60))
+
+
+p7 <- ggplot(M_data,aes(Pairs, Time)) + geom_point() + ggtitle("Migrant") + ylab("Time in thousands [Y]") + xlab("") + theme(plot.title = element_text(hjust = 0.5)) + stat_smooth(method = "lm", level = 0)+ xlim(c(0,12)) + ylim(c(0,60))
+p8 <- ggplot(R_data,aes(Pairs, Time)) + geom_point() + ggtitle("Resident")+ ylab("")  + xlab("") + theme(plot.title = element_text(hjust = 0.5))+ stat_smooth(method = "lm",level = 0)+ xlim(c(0,12)) + ylim(c(0,60))
 
 ggplot(data, aes(Pairs, log(Time))) + geom_point()
 
 p1+p2+p3+p4
 
 p5 + p6
+
+p7 + p8
 
 
 
@@ -187,18 +196,23 @@ summary(lm_full.inversepair)$r.squared
 
 #6
 
+```{r}
+
+```
+
+
 
 ```{r}
 
-m1 <- lm(formula = 1/(Time) ~ Pairs, data)
-m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
-m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
-m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data)
-m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
-m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
-m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
-m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
-m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status, data)
+m1 <- lm(formula = log(Time) ~ Pairs, data)
+m2 <- lm(formula = log(Time) ~ Pairs + Size, data)
+m3 <- lm(formula = log(Time) ~ Pairs + Size + Pairs*Size, data)
+m4 <- lm(formula = log(Time) ~ Pairs + Status, data)
+m5 <- lm(formula = log(Time) ~ Pairs + Status + Pairs * Status, data)
+m6 <- lm(formula = log(Time) ~ Pairs + Size + Status, data)
+m7 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
+m8 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
+m9 <- lm(formula = log(Time) ~ Pairs + Pairs*Size*Status - Size*Status+Size + Status + Pairs*Size + Pairs*Status , data)
 
 
 anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
@@ -223,6 +237,32 @@ summary(m7)
 
 Analyzing only the R-squared the best model seems to be number 7, which does not consider the interaction between size and status together
 
+```{r}
+
+m1 <- lm(formula = 1/(Time) ~ Pairs, data)
+m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
+m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
+m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data)
+m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
+m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
+m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
+m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
+m9 <- lm(formula = 1/(Time) ~ Pairs + Pairs*Size*Status - Size*Status+Size + Status + Pairs*Size + Pairs*Status , data)
+
+
+anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
+
+summary(m1)$adj.r.squared
+summary(m2)$adj.r.squared
+summary(m3)$adj.r.squared
+summary(m4)$adj.r.squared
+summary(m5)$adj.r.squared
+summary(m6)$adj.r.squared
+summary(m7)$adj.r.squared
+summary(m8)$adj.r.squared
+summary(m9)$adj.r.squared
+
+```
 
 
 

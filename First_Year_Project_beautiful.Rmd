@@ -32,6 +32,10 @@ $$
 lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
 summary(lm_full)
 
+lm_full2 <- lm(formula = Time ~ Pairs*Size*Status, data)
+summary(lm_full2)
+
+
 ```
 Calling the summary on the Multiple linear model we just created, we get different measurements. 
 Looking at the R-squared, we got a R-Squared value of 0.3398. We also get an adjusted R-squared with a value of 0.2542. 
@@ -163,9 +167,10 @@ summary(lm_full_inverse)$adj.r.squared
 ckd_inv <- cooks.distance(lm_full_inverse)
 ckd_log <- cooks.distance(lm_full_transformed)
 
-sub_ckd <- subset(ckd, ckd < 0.2)
+#sub_ckd <- subset(ckd_inv, ckd_ inv< 0.2)
 
 index <- which(ckd_inv > 0.2)
+index.log <- which(ckd_log > 0.2)
 
 index
 plot(ckd_inv, ylim = c(0,0.4))
@@ -180,13 +185,57 @@ If we remove three outliers in inverse.........
 
 ```{r}
 data_ckd <- data[-c(index),]
+data_ckd_log <- data[-c(index.log),]
 
 lm_full_inverse_ckd <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd)
+#summary(lm_full_inverse_ckd)#$adj.r.squared
+#summary(lm_full_inverse)#$adj.r.squared
+
+
+lm_full_log_ckd <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd_log)
+#summary(lm_full_log_ckd)#$adj.r.squared
+#summary(lm_full_transformed)
+
+
 summary(lm_full_inverse_ckd)$adj.r.squared
 summary(lm_full_inverse)$adj.r.squared
+summary(lm_full_log_ckd)$adj.r.squared
+summary(lm_full_transformed)$adj.r.squared
+
 
 ```
-#4points better for the 
+
+?????ludek outliers and logvsinverse 
+
+```{r}
+
+m1 <- lm(formula = 1/(Time) ~ Pairs, data)
+m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
+m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
+m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data)
+m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
+m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
+m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
+m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
+m9 <- lm(formula = 1/(Time) ~ Pairs + Pairs*Size*Status - Size*Status+Size + Status + Pairs*Size + Pairs*Status , data)
+
+
+anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
+
+summary(m1)$adj.r.squared
+summary(m2)$adj.r.squared
+summary(m3)$adj.r.squared
+summary(m4)$adj.r.squared
+summary(m5)$adj.r.squared
+summary(m6)$adj.r.squared
+summary(m7)$adj.r.squared
+summary(m8)$adj.r.squared
+summary(m9)$adj.r.squared
+
+summary(m7)
+
+```
+
 
 
 
