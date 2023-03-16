@@ -212,6 +212,14 @@ summary(lm_full_transformed)$adj.r.squared
 
 
 ```
+```{r}
+data_ckd <- data[-c(index),]
+
+lm_final <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data_ckd)
+summary(lm_final)
+
+chchaaaaaaaaaaa<n
+```
 
 
 2.2.4
@@ -237,19 +245,24 @@ Nested models and variable contribution
 
 ```{r}
 
-m1 <- lm(formula = 1/(Time) ~ Pairs, data)
-m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
-m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
-m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data)
-m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
-m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
-m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
-m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
-m9 <- lm(formula = 1/(Time) ~ Pairs + Pairs*Size*Status - Size*Status+Size + Status + Pairs*Size + Pairs*Status , data)
+m1 <- lm(formula = 1/(Time) ~ Pairs, data_ckd)
+m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data_ckd)
+m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data_ckd)
+m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data_ckd)
+m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data_ckd)
+m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data_ckd)
+m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data_ckd)     
+m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data_ckd)
+m9 <- lm(formula = 1/(Time) ~ Pairs + Pairs*Size*Status - Size*Status+Size + Status + Pairs*Size + Pairs*Status , data_ckd)
+
+an <- anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
+#an <- anova(m9, m1)
+
+print(an)
+```
 
 
-anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
-
+```{r}
 summary(m1)$adj.r.squared
 summary(m2)$adj.r.squared
 summary(m3)$adj.r.squared
@@ -263,7 +276,4 @@ summary(m9)$adj.r.squared
 summary(m7)
 
 ```
-
-
-
 
