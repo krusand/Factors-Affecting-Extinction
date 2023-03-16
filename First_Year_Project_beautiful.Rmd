@@ -19,6 +19,8 @@ library(tidyverse)
 data <- read.csv("Factors Affecting Extinction.csv")
 head(data)
 ```
+2.1
+
 We have the species, which is our identifier of each bird. Time (extinction time) is a numerical value, as is Paris (nesting pairs). Both size and status are categorical variables with either [L (Large),S (Small)] or [R (Resident),M (Migrant)]
 
 # Making a full model
@@ -85,13 +87,13 @@ For the next step in the analysis of the dataset, we look at outliers and residu
 
 ## I would say 4 regression lines? it is still the same model, not 4 different models. 
 
-## Not only equation but solve with our beta and plot the 4 regression lines? analyze contribution of it variable. (part of #6)
 
 
 
 
 
 
+2.1.2
 
 Analyzing assumptions of linear regression
 
@@ -118,6 +120,11 @@ abline(0, 0)
     Shows a clear non-linear pattern.
 
 
+
+2.2
+
+2.2.1
+2.2.2
 Transformations of variables 
 
 ###### R2, q-q plot and spead-level plot for each transformation of the outcome 'Time'
@@ -160,6 +167,7 @@ summary(lm_full_inverse)$adj.r.squared
 ```
 
 
+2.2.3
 
 #Outliers
 
@@ -205,7 +213,27 @@ summary(lm_full_transformed)$adj.r.squared
 
 ```
 
-?????ludek outliers and logvsinverse 
+
+2.2.4
+
+#Transforming the independent variable (N of pairs).... dead end 
+
+```{r}
+lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+lm_full.logpair <- lm(formula = Time ~ log(Pairs) + Size + Status + log(Pairs)*Size + log(Pairs) * Status + Size*Status + log(Pairs)*Size*Status, data)
+lm_full.sqrtpair <- lm(formula = Time ~ sqrt(Pairs) + Size + Status + sqrt(Pairs)*Size + sqrt(Pairs) * Status + Size*Status + sqrt(Pairs)*Size*Status, data)
+lm_full.inversepair <- lm(formula = Time ~ 1/Pairs + Size + Status + 1/Pairs*Size + 1/Pairs * Status + Size*Status + 1/Pairs*Size*Status, data)
+
+summary(lm_full)$r.squared
+summary(lm_full.logpair)$r.squared
+summary(lm_full.sqrtpair)$r.squared
+summary(lm_full.inversepair)$r.squared
+
+```
+
+
+2.3
+Nested models and variable contribution
 
 ```{r}
 
