@@ -77,12 +77,19 @@ For the next step in the analysis of the dataset, we look at outliers and residu
 
 
 
+*************
+
+## I would say 4 regression lines? it is still the same model, not 4 different models. 
+
+## Not only equation but solve with our beta and plot the 4 regression lines? analyze contribution of it variable. (part of #6)
 
 
 
 
 
 
+
+Analyzing assumptions of linear regression
 
 
 ```{r}
@@ -100,7 +107,6 @@ abline(0, 0)
 
 ```
 
-Analyzing assumptions of linear regression
 
 1) Normality. Q-Q plot shows big deviations on each side. Pag 60
 
@@ -108,9 +114,9 @@ Analyzing assumptions of linear regression
     Shows a clear non-linear pattern.
 
 
-# Transformations of variables 
+Transformations of variables 
 
-R2, q-q plot and spead-level plot for each transformation of the outcome 'Time'
+###### R2, q-q plot and spead-level plot for each transformation of the outcome 'Time'
 
 ```{r}
 lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data)
@@ -142,8 +148,11 @@ abline(0, 0)
 We decided to keep working with the transformed variable log(Time). New model:
 
 ```{r}
-lm_full_logtime <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
-summary(lm_full_logtime)$adj.r.squared
+lm_full_transformed <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+summary(lm_full_transformed)$adj.r.squared
+
+lm_full_inverse <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
+summary(lm_full_inverse)$adj.r.squared
 ```
 
 
@@ -151,24 +160,33 @@ summary(lm_full_logtime)$adj.r.squared
 #Outliers
 
 ```{r}
-ckd <- cooks.distance(lm_full_logtime)
-sub_ckd <- subset(ckd, ckd < 0.1)
-index <- which(ckd > 0.1)
+ckd_inv <- cooks.distance(lm_full_inverse)
+ckd_log <- cooks.distance(lm_full_transformed)
+
+sub_ckd <- subset(ckd, ckd < 0.2)
+
+index <- which(ckd_inv > 0.2)
 
 index
-plot(ckd, ylim = c(0,0.25))
-plot(sub_ckd, ylim = c(0,0.1))
+plot(ckd_inv, ylim = c(0,0.4))
+plot(ckd_log, ylim = c(0,0.4))
+#plot(sub_ckd, ylim = c(0,0.15))
 ```
 
-????? non of them is significantly bigger than the others 
+????? in log transf non of them is significantly bigger than the others 
+
+
+If we remove three outliers in inverse.........
 
 ```{r}
 data_ckd <- data[-c(index),]
 
-lm_full_logtime_ckd <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd)
-summary(lm_full_logtime_ckd)$adj.r.squared
+lm_full_inverse_ckd <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd)
+summary(lm_full_inverse_ckd)$adj.r.squared
+summary(lm_full_inverse)$adj.r.squared
 
 ```
+#4points better for the 
 
 
 

@@ -190,15 +190,15 @@ summary(lm_full.inversepair)$r.squared
 
 ```{r}
 
-m1 <- lm(formula = log(Time) ~ Pairs, data)
-m2 <- lm(formula = log(Time) ~ Pairs + Size, data)
-m3 <- lm(formula = log(Time) ~ Pairs + Size + Pairs*Size, data)
-m4 <- lm(formula = log(Time) ~ Pairs + Status, data)
-m5 <- lm(formula = log(Time) ~ Pairs + Status + Pairs * Status, data)
-m6 <- lm(formula = log(Time) ~ Pairs + Size + Status, data)
-m7 <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
-m8 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
-m9 <- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status, data)
+m1 <- lm(formula = 1/(Time) ~ Pairs, data)
+m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
+m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
+m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data)
+m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
+m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
+m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
+m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
+m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status, data)
 
 
 anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)
