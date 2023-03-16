@@ -178,7 +178,7 @@ abline(0, 0)
 ```
 
 
-# 5 
+# 5  
 
 ```{r}
 lm_full <- lm(formula = Time ~ Pairs + Size + Status + Pairs*Size + Pairs * Status + Size*Status + Pairs*Size*Status, data)
