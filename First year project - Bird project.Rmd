@@ -72,6 +72,16 @@ p7 + p8
 
 
 ```
+```{r}
+
+ggplot(data, aes(Pairs, Time,col=Size)) + geom_point() + ggtitle("Time vs Pairs showing Size")+ ylab("Extinction Time")  + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,60)) + scale_color_manual(values = c("goldenrod1","dodgerblue2"))
+
+ggplot(data, aes(Pairs, Time,shape = Status)) + geom_point() + ggtitle("Time vs Pairs showing Status")+ ylab("Extinction Time")  + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,60))
+
+ggplot(data, aes(Pairs, Time,col = Size, shape = Status)) + geom_point() + ggtitle("Time vs Pairs showing Status")+ ylab("Extinction Time")  + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,60)) + scale_color_manual(values = c("goldenrod1","dodgerblue2"))
+
+
+```
 
 # 2
 Residual plot + plots of possible transformations

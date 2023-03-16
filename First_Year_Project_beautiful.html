@@ -411,8 +411,30 @@ summary(lm_full)</code></pre>
 ## Residual standard error: 9.237 on 54 degrees of freedom
 ## Multiple R-squared:  0.3398, Adjusted R-squared:  0.2542 
 ## F-statistic:  3.97 on 7 and 54 DF,  p-value: 0.001446</code></pre>
-<pre class="r"><code>#lm_full2 &lt;- lm(formula = Time ~ Pairs*Size*Status, data)
-#summary(lm_full2)</code></pre>
+<pre class="r"><code>lm_full2 &lt;- lm(formula = Time ~ Pairs*Size*Status, data)
+summary(lm_full2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Time ~ Pairs * Size * Status, data = data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -14.769  -3.644  -0.652   1.128  49.831 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)           0.7775     6.6831   0.116    0.908
+## Pairs                 1.2397     1.7232   0.719    0.475
+## SizeS                 0.1759     8.3168   0.021    0.983
+## StatusR               4.0489     7.8704   0.514    0.609
+## Pairs:SizeS          -0.9058     2.4206  -0.374    0.710
+## Pairs:StatusR         0.5317     2.0037   0.265    0.792
+## SizeS:StatusR        -9.4013     9.8736  -0.952    0.345
+## Pairs:SizeS:StatusR   2.0047     2.7218   0.737    0.465
+## 
+## Residual standard error: 9.237 on 54 degrees of freedom
+## Multiple R-squared:  0.3398, Adjusted R-squared:  0.2542 
+## F-statistic:  3.97 on 7 and 54 DF,  p-value: 0.001446</code></pre>
 <p>Calling the summary on the Multiple linear model we just created, we
 get different measurements. Looking at the R-squared, we got a R-Squared
 value of 0.3398. We also get an adjusted R-squared with a value of
@@ -532,6 +554,7 @@ ckd_log &lt;- cooks.distance(lm_full_transformed)
 #sub_ckd &lt;- subset(ckd_inv, ckd_ inv&lt; 0.2)
 
 index &lt;- which(ckd_inv &gt; 0.2)
+index.log &lt;- which(ckd_log &gt; 0.2)
 
 index</code></pre>
 <pre><code>## 13 14 60 
@@ -545,13 +568,106 @@ index</code></pre>
 others</p>
 <p>If we remove three outliers in inverse………</p>
 <pre class="r"><code>data_ckd &lt;- data[-c(index),]
+data_ckd_log &lt;- data[-c(index.log),]
 
 lm_full_inverse_ckd &lt;- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd)
+#summary(lm_full_inverse_ckd)#$adj.r.squared
+#summary(lm_full_inverse)#$adj.r.squared
+
+
+lm_full_log_ckd &lt;- lm(formula = log(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Size*Status + Pairs*Size*Status, data_ckd_log)
+#summary(lm_full_log_ckd)#$adj.r.squared
+#summary(lm_full_transformed)
+
+
 summary(lm_full_inverse_ckd)$adj.r.squared</code></pre>
 <pre><code>## [1] 0.6673142</code></pre>
 <pre class="r"><code>summary(lm_full_inverse)$adj.r.squared</code></pre>
 <pre><code>## [1] 0.6264888</code></pre>
-<p>#4points better for the</p>
+<pre class="r"><code>summary(lm_full_log_ckd)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.6282088</code></pre>
+<pre class="r"><code>summary(lm_full_transformed)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.5783079</code></pre>
+<p>?????ludek outliers and logvsinverse</p>
+<pre class="r"><code>m1 &lt;- lm(formula = 1/(Time) ~ Pairs, data)
+m2 &lt;- lm(formula = 1/(Time) ~ Pairs + Size, data)
+m3 &lt;- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
+m4 &lt;- lm(formula = 1/(Time) ~ Pairs + Status, data)
+m5 &lt;- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
+m6 &lt;- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
+m7 &lt;- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)     
+m8 &lt;- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status + Size*Status, data)
+m9 &lt;- lm(formula = 1/(Time) ~ Pairs + Pairs*Size*Status - Size*Status+Size + Status + Pairs*Size + Pairs*Status , data)
+
+
+anova(m1, m2, m3, m4, m5, m6, m7, m8, m9)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: 1/(Time) ~ Pairs
+## Model 2: 1/(Time) ~ Pairs + Size
+## Model 3: 1/(Time) ~ Pairs + Size + Pairs * Size
+## Model 4: 1/(Time) ~ Pairs + Status
+## Model 5: 1/(Time) ~ Pairs + Status + Pairs * Status
+## Model 6: 1/(Time) ~ Pairs + Size + Status
+## Model 7: 1/(Time) ~ Pairs + Size + Status + Pairs * Size + Pairs * Status
+## Model 8: 1/(Time) ~ Pairs + Size + Status + Pairs * Size + Pairs * Status + 
+##     Pairs * Size * Status + Size * Status
+## Model 9: 1/(Time) ~ Pairs + Pairs * Size * Status - Size * Status + Size + 
+##     Status + Pairs * Size + Pairs * Status
+##   Res.Df    RSS Df Sum of Sq       F    Pr(&gt;F)    
+## 1     60 3.3390                                   
+## 2     59 2.5615  1   0.77746 23.0232 1.304e-05 ***
+## 3     58 2.3773  1   0.18419  5.4544  0.023264 *  
+## 4     59 2.9226 -1  -0.54521 16.1456  0.000183 ***
+## 5     58 2.6467  1   0.27583  8.1683  0.006044 ** 
+## 6     58 2.1852  0   0.46154                      
+## 7     56 1.8526  2   0.33257  4.9243  0.010853 *  
+## 8     54 1.8235  2   0.02912  0.4311  0.651980    
+## 9     55 1.8517 -1  -0.02818  0.8344  0.365063    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary(m1)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.3844603</code></pre>
+<pre class="r"><code>summary(m2)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.5197802</code></pre>
+<pre class="r"><code>summary(m3)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.5466262</code></pre>
+<pre class="r"><code>summary(m4)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.4520978</code></pre>
+<pre class="r"><code>summary(m5)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.495254</code></pre>
+<pre class="r"><code>summary(m6)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.5832723</code></pre>
+<pre class="r"><code>summary(m7)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.6340771</code></pre>
+<pre class="r"><code>summary(m8)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.6264888</code></pre>
+<pre class="r"><code>summary(m9)$adj.r.squared</code></pre>
+<pre><code>## [1] 0.6276134</code></pre>
+<pre class="r"><code>summary(m7)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs * Size + 
+##     Pairs * Status, data = data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.46152 -0.09369 -0.01133  0.08777  0.48092 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    0.67505    0.09678   6.975 3.80e-09 ***
+## Pairs         -0.09340    0.02601  -3.591 0.000696 ***
+## SizeS          0.37217    0.08732   4.262 7.84e-05 ***
+## StatusR       -0.35078    0.09319  -3.764 0.000403 ***
+## Pairs:SizeS   -0.04936    0.02155  -2.290 0.025786 *  
+## Pairs:StatusR  0.06355    0.02614   2.432 0.018258 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1819 on 56 degrees of freedom
+## Multiple R-squared:  0.6641, Adjusted R-squared:  0.6341 
+## F-statistic: 22.14 on 5 and 56 DF,  p-value: 3.59e-12</code></pre>
 </div>
 </div>
 </div>
