@@ -1,0 +1,32 @@
++ Scatterplot of dataset with Size
++ Scatterplot of dataset with Status
++ Scatterplot of dataset with Size and Status
++ Residual plot for baseline model
++ QQ-plot for baseline model
++ Regression line plot for baseline model with 4 different slopes
++ Scatterplot of dataset given log(time) with Size and Status
++ Scatterplot of dataset given 1/(time) with Size and Status
++ Scatterplot of dataset given sqrt(time) with Size and Status
++ Residual plot for log(time)
++ Residual plot for 1(time)
++ Residual plot for sqrt(time)
++ QQ-plot for log(time)
++ QQ-plot for 1(time)
++ QQ-plot for sqrt(time)
++ Regression line plot for transformed model with 4 different slopes
++ Plot with cooks distance for transformed model
++ Scatterplot with highlighted cook distance 
++ Regression lines with and without cookdistance
++ Scatterplot of dataset given log(Pairs) with Size and Status
++ Scatterplot of dataset given 1/(Pairs) with Size and Status
++ Scatterplot of dataset given sqrt(Pairs) with Size and Status
++ Plot of final model 
+
+
+
+
+
+
+
+
+
