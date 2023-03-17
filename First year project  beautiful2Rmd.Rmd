@@ -232,9 +232,36 @@ summary(lm.ind.inv)
 ```
 
 # Comparison models using anova to simplify model if possible
-Anova returns a p-value for which if p > 0.5 we prefer the more simple model
+
 
 ```{r}
+
+m1 <- lm(formula = 1/(Time) ~ Pairs, data)
+m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
+m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
+m4 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status, data)
+m5 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size, data)
+m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size  + Pairs*Size*Status, data)
+
+summary(m1)$adj.r.squared
+summary(m2)$adj.r.squared
+summary(m3)$adj.r.squared
+summary(m4)$adj.r.squared
+summary(m5)$adj.r.squared
+summary(m6)$adj.r.squared
+
+anova(m1,m2,m3,m4,m5,m6)
+
+```
+
+```{r}
+m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status  + Pairs*Size, data)
+summary(m9)
+```
+ Anova returns a p-value for which if p > 0.5 we prefer the more simple model
+```{r}
+
+#ohterway..
 
 m1 <- lm(formula = 1/(Time) ~ Pairs, data)
 m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
@@ -244,9 +271,8 @@ m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
 m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
 m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size, data)
 m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status, data)
-m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data)
+m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status  + Pairs*Size, data)
 m10<- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status, data)
-
 
 anova(m10, m1)
 anova(m10, m2)
@@ -257,14 +283,6 @@ anova(m10, m6)
 anova(m10, m7)
 anova(m10, m8)
 anova(m10, m9)
-
-```
-
-```{r}
-summary(m9)
-```
-
-```{r}
 
 ```
 
