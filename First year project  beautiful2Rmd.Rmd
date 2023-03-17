@@ -264,9 +264,15 @@ anova(m10, m9)
 summary(m9)
 ```
 
+```{r}
+
+```
+
 
 
 # Final model
+
+#####shouldn't we work with the data withour outliers???
 
 ```{r}
 data.final <- cbind(data.for.plot, predict(m9))
@@ -292,10 +298,6 @@ ggplot(data.final, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/T
 
 
 
-
-
 ```
-
-
 
 
