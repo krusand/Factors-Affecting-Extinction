@@ -185,6 +185,8 @@ summary(lm.inv.minOutliers)
 
 ```
 
+Choose model without outliers. 
+
 ```{r}
 
 data.minOutliers.forPlot <- data.for.plot[-c(which(ckd.inv > 0.2)),]
@@ -197,21 +199,21 @@ ggplot(data.for.plot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("
 
 ```
 
-Both adjusted R-squared and R-squared are bad for all transformations.
 
 # Scatterplots of transformation of independent variable
 
 ```{r}
 
+
 # log independent variable transformation
-ggplot(data.for.plot, aes(Pairs, log(Time),col = Type)) + geom_point() + ggtitle("Time vs log(Pairs) showing Size & Status")+ ylab("Extinction Time")  + xlab("log(Nr. of nesting pairs)") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black", "red2"))
+ggplot(data.minOutliers.forPlot, aes(Pairs, log(Time),col = Type)) + geom_point() + ggtitle("Time vs log(Pairs) showing Size & Status")+ ylab("Extinction Time")  + xlab("log(Nr. of nesting pairs)") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,9)) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black", "red2"))
 
 # sqrt independent variable transformation
-ggplot(data.for.plot, aes(Pairs, sqrt(Time),col = Type)) + geom_point() + ggtitle("Time vs sqrt(Pairs) showing Size & Status")+ ylab("Extinction Time")  + xlab("sqrt(Nr. of nesting pairs)") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black", "red2"))
+ggplot(data.minOutliers.forPlot, aes(Pairs, sqrt(Time),col = Type)) + geom_point() + ggtitle("Time vs sqrt(Pairs) showing Size & Status")+ ylab("Extinction Time")  + xlab("sqrt(Nr. of nesting pairs)") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,9)) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black", "red2"))
 
 # inverse independent variable transformation
 
-ggplot(data.for.plot, aes(Pairs, 1/(Time),col = Type)) + geom_point() + ggtitle("Time vs 1/Pairs showing Size & Status")+ ylab("Extinction Time")  + xlab("1/(Nr. of nesting pairs)") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black", "red2"))
+ggplot(data.minOutliers.forPlot, aes(Pairs, 1/(Time),col = Type)) + geom_point() + ggtitle("Time vs 1/Pairs showing Size & Status")+ ylab("Extinction Time")  + xlab("1/(Nr. of nesting pairs)") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,9)) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black", "red2"))
 
 
 
@@ -221,9 +223,9 @@ ggplot(data.for.plot, aes(Pairs, 1/(Time),col = Type)) + geom_point() + ggtitle(
 
 ```{r}
 
-lm.ind.log <- lm(formula = Time ~ log(Pairs) + Size + Status + log(Pairs)*Size + log(Pairs)*Status + Size*Status + log(Pairs)*Size*Status, data)
-lm.ind.sqrt<- lm(formula = Time ~ sqrt(Pairs) + Size + Status + sqrt(Pairs)*Size + sqrt(Pairs)*Status + Size*Status + sqrt(Pairs)*Size*Status, data)
-lm.ind.inv <- lm(formula = Time ~ 1/(Pairs) + Size + Status + (1/(Pairs))*Size + (1/(Pairs))*Status + Size*Status + (1/(Pairs))*Size*Status, data)
+lm.ind.log <- lm(formula = Time ~ log(Pairs) + Size + Status + log(Pairs)*Size + log(Pairs)*Status + Size*Status + log(Pairs)*Size*Status, data.minOutliers)
+lm.ind.sqrt<- lm(formula = Time ~ sqrt(Pairs) + Size + Status + sqrt(Pairs)*Size + sqrt(Pairs)*Status + Size*Status + sqrt(Pairs)*Size*Status, data.minOutliers)
+lm.ind.inv <- lm(formula = Time ~ 1/(Pairs) + Size + Status + (1/(Pairs))*Size + (1/(Pairs))*Status + Size*Status + (1/(Pairs))*Size*Status, data.minOutliers)
 summary(lm.ind.log)
 summary(lm.ind.sqrt)
 summary(lm.ind.inv)
@@ -231,17 +233,20 @@ summary(lm.ind.inv)
 
 ```
 
-# Comparison models using anova to simplify model if possible
+Both adjusted R-squared and R-squared are bad for all transformations.
 
+
+# Comparison models using anova to simplify model if possible
+Anova returns a p-value for which if p > 0.5 we prefer the more simple model
 
 ```{r}
 
-m1 <- lm(formula = 1/(Time) ~ Pairs, data)
-m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
-m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
-m4 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status, data)
-m5 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size, data)
-m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size  + Pairs*Size*Status, data)
+m1 <- lm(formula = 1/(Time) ~ Pairs, data.minOutliers)
+m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data.minOutliers)
+m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data.minOutliers)
+m4 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status, data.minOutliers)
+m5 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size, data.minOutliers)
+m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size  + Pairs*Size*Status, data.minOutliers)
 
 summary(m1)$adj.r.squared
 summary(m2)$adj.r.squared
@@ -251,60 +256,23 @@ summary(m5)$adj.r.squared
 summary(m6)$adj.r.squared
 
 anova(m1,m2,m3,m4,m5,m6)
-
 ```
-
-```{r}
-m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status  + Pairs*Size, data)
-summary(m9)
-```
- Anova returns a p-value for which if p > 0.5 we prefer the more simple model
-```{r}
-
-#ohterway..
-
-m1 <- lm(formula = 1/(Time) ~ Pairs, data)
-m2 <- lm(formula = 1/(Time) ~ Pairs + Size, data)
-m3 <- lm(formula = 1/(Time) ~ Pairs + Size + Pairs*Size, data)
-m4 <- lm(formula = 1/(Time) ~ Pairs + Status, data)
-m5 <- lm(formula = 1/(Time) ~ Pairs + Status + Pairs * Status, data)
-m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status, data)
-m7 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size, data)
-m8 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status, data)
-m9 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status  + Pairs*Size, data)
-m10<- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status + Pairs*Size*Status, data)
-
-anova(m10, m1)
-anova(m10, m2)
-anova(m10, m3)
-anova(m10, m4)
-anova(m10, m5)
-anova(m10, m6)
-anova(m10, m7)
-anova(m10, m8)
-anova(m10, m9)
-
-```
-
-
 
 # Final model
 
-#####shouldn't we work with the data withour outliers???
-
 ```{r}
-data.final <- cbind(data.for.plot, predict(m9))
+data.final <- cbind(data.minOutliers.forPlot, predict(m6))
 
-vSR.slope <- (-0.09340) + (1*(-0.04936)) + (1*0.06355)
-vSR.intercept <- 0.67505 + (1*0.37217) + (1*-0.35078)
-vLR.slope <- (-0.09340) + (0*(-0.04936)) + (1*0.06355)
-vLR.intercept <- 0.67505 + (0*0.37217) + (1*-0.35078)
-vSM.slope <- (-0.09340) + (1*(-0.04936)) + (0*0.06355)
-vSM.intercept <- 0.67505 + (1*0.37217) + (0*-0.35078)
-vLM.slope <- (-0.09340) + (0*(-0.04936)) + (0*0.06355)
-vLM.intercept <- 0.67505 + (0*0.37217) + (0*-0.35078)
+vSR.slope <- summary(m5)$coefficients[2] + (1*summary(m5)$coefficients[6]) + (1*summary(m5)$coefficients[5])
+vSR.intercept <- summary(m5)$coefficients[1] + (1*summary(m5)$coefficients[3]) + (1*summary(m5)$coefficients[4])
+vLR.slope <- summary(m5)$coefficients[2] + (0*summary(m5)$coefficients[6]) + (1*summary(m5)$coefficients[5])
+vLR.intercept <- summary(m5)$coefficients[1] + (0*summary(m5)$coefficients[3]) + (1*summary(m5)$coefficients[4])
+vSM.slope <- summary(m5)$coefficients[2] + (1*summary(m5)$coefficients[6]) + (0*summary(m5)$coefficients[5])
+vSM.intercept <- summary(m5)$coefficients[1] + (1*summary(m5)$coefficients[3]) + (0*summary(m5)$coefficients[4])
+vLM.slope <- summary(m5)$coefficients[2] + (0*(summary(m5)$coefficients[6])) + (0*summary(m5)$coefficients[5])
+vLM.intercept <- summary(m5)$coefficients[1] + (0*summary(m5)$coefficients[3]) + (0*summary(m5)$coefficients[4])
 
-ggplot(data.for.plot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/Time vs Pairs showing Size, Status & \nRegression Lines for full model")+ ylab("1/(Extinction Time)") + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,1))+ stat_smooth(method = "lm", fullrange=T, level=0) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black","red2")) 
+ggplot(data.minOutliers.forPlot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/Time vs Pairs showing Size, Status & \nRegression Lines for full model")+ ylab("1/(Extinction Time)") + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,1))+ stat_smooth(method = "lm", fullrange=T, level=0) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black","red2")) 
 
 
 my_cols <- c("goldenrod1","dodgerblue2", "black","red2")
@@ -316,6 +284,10 @@ ggplot(data.final, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/T
 
 
 
+
+
 ```
+
+
 
 
