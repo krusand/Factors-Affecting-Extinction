@@ -218,7 +218,6 @@ data_ckd <- data[-c(index),]
 lm_final <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Size + Pairs*Status, data_ckd)
 summary(lm_final)
 
-chchaaaaaaaaaaa<n
 ```
 
 
