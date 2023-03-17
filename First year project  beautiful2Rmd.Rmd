@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+
 ```
 
 # Packages
@@ -192,10 +193,9 @@ Choose model without outliers.
 #data.minOutliers.forPlot <- data.for.plot[-c(which(ckd.inv > 0.2)),]
 data.minOutliers.forPlot <- data.for.plot[-mask[3],]
 
-ggplot(data.minOutliers.forPlot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/Time vs Pairs showing Size, Status & Regression Lines minus outliers")+ ylab("1/(Extinction Time)") + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,1)) + stat_smooth(method = "lm", fullrange=T, level=0) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black","red2")) 
+ggplot(data.minOutliers.forPlot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/Time vs Pairs showing Size, Status\n & Regression Lines minus outlier")+ ylab("1/(Extinction Time)") + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,1)) + stat_smooth(method = "lm", fullrange=T, level=0) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black","red2"))
 
-ggplot(data.for.plot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/Time vs Pairs showing Size, Status & Regression Lines")+ ylab("1/(Extinction Time)") + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,1))+ stat_smooth(method = "lm", fullrange=T, level=0) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black","red2")) 
-
+ggplot(data.for.plot, aes(Pairs, 1/(Time), col=Type)) + geom_point() + ggtitle("1/Time vs Pairs showing Size, \nStatus & Regression Lines")+ ylab("1/(Extinction Time)") + xlab("Nr. of nesting pairs") + theme(plot.title = element_text(hjust = 0.5))+ xlim(c(0,12)) + ylim(c(0,1))+ stat_smooth(method = "lm", fullrange=T, level=0) + scale_color_manual(values = c("goldenrod1","dodgerblue2", "black","red2")) 
 
 
 ```
