@@ -227,9 +227,9 @@ ggplot(data.minOutliers.forPlot, aes(Pairs, 1/(Time),col = Type)) + geom_point()
 lm.ind.log <- lm(formula = Time ~ log(Pairs) + Size + Status + log(Pairs)*Size + log(Pairs)*Status + Size*Status + log(Pairs)*Size*Status, data.minOutliers)
 lm.ind.sqrt<- lm(formula = Time ~ sqrt(Pairs) + Size + Status + sqrt(Pairs)*Size + sqrt(Pairs)*Status + Size*Status + sqrt(Pairs)*Size*Status, data.minOutliers)
 lm.ind.inv <- lm(formula = Time ~ 1/(Pairs) + Size + Status + (1/(Pairs))*Size + (1/(Pairs))*Status + Size*Status + (1/(Pairs))*Size*Status, data.minOutliers)
-summary(lm.ind.log)
-summary(lm.ind.sqrt)
-summary(lm.ind.inv)
+summary(lm.ind.log)$adj.r.squared
+summary(lm.ind.sqrt)$adj.r.squared
+summary(lm.ind.inv)$adj.r.squared
 
 
 ```
@@ -238,7 +238,6 @@ Both adjusted R-squared and R-squared are bad for all transformations.
 
 
 # Comparison models using anova to simplify model if possible
-Anova returns a p-value for which if p > 0.5 we prefer the more simple model
 
 ```{r}
 
@@ -249,14 +248,16 @@ m4 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status, data.minOutl
 m5 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size, data.minOutliers)
 m6 <- lm(formula = 1/(Time) ~ Pairs + Size + Status + Pairs*Status + Pairs*Size  + Pairs*Size*Status, data.minOutliers)
 
+
+anova(m1,m2,m3,m4,m5,m6)
+```
+```{r}
 summary(m1)$adj.r.squared
 summary(m2)$adj.r.squared
 summary(m3)$adj.r.squared
 summary(m4)$adj.r.squared
 summary(m5)$adj.r.squared
 summary(m6)$adj.r.squared
-
-anova(m1,m2,m3,m4,m5,m6)
 ```
 
 # Final model
